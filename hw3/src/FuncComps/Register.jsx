@@ -9,6 +9,8 @@ import { Input, checkboxClasses } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 
 export default function Register() {
+
+  // מערך שגיאות
   const errors = {
     firstName: {
       massege: "invalid First name",
@@ -40,7 +42,9 @@ export default function Register() {
     birthDate: {massege:"חייב להיות מעל 18 ומתחת ל120"},
     house:{massege:"מספר חיובי בלבד", valid: new RegExp("^[1-9]+[0-9]*$")}
   };
+  
   let password2 ;
+  //מערך יוזר
   const person = {
     firstName: "",
     lastName: "",
@@ -53,6 +57,7 @@ export default function Register() {
     house: "",
     username: "",
   };
+  // מערך הצגת פסקת שגיאה
   const arr = {
     firstName: "hidden",
     lastName: "hidden",
@@ -67,8 +72,10 @@ export default function Register() {
     password2: "hidden",
   };
   const [values, setValues] = useState({ ...arr });
-
+  //const [personArr, setPerson]=useState({...person})
+// מערך ערים לכפתור
   let citys = ["ראש העין", "תל אביב", "חיפה", "אשדוד", "ירושלים"];
+  // לחיצה על כתפור הרשמה
   function registerUser() {
     let arr = { ...values },
       counter = 0;
@@ -115,8 +122,9 @@ export default function Register() {
       arr.street = "hidden";
       counter++;
     }
+    // חישוב גיל
     let age=calculate_age(person.birthDate)
-    if(120<=age|| age <=18)  arr.birthDate="visible";
+    if(120<=age|| age <=18 || person.birthDate=="")  arr.birthDate="visible";
     else {
       arr.birthDate = "hidden";
       counter++;
@@ -130,12 +138,13 @@ export default function Register() {
     setValues(arr);
 
     if (counter == 6) {
-      // localstorage....
+      // לעבור למסך הבא....
     }
   }
+
   useEffect(() => console.log(values));
   console.log(values);
-
+// פונקציית חישוב גיל
  const calculate_age = (e) => {
     var today = new Date();
     var birthDate = new Date(e);  // create a date object directly from `dob1` argument
@@ -166,7 +175,7 @@ export default function Register() {
             />
             <Alert severity="error" style={{ visibility: values.firstName }}>
               {" "}
-              {errors.firstName.massege}{" "}
+              {errors.firstName.massege}
             </Alert>
           </Grid>
 
@@ -267,7 +276,7 @@ export default function Register() {
           <br />
           <br />
           </Grid>
-      
+          {/* street*/}
           <Grid item xs={4} style={{margin:3}}>
           
               <TextField
@@ -282,6 +291,8 @@ export default function Register() {
               {errors.street.massege}
             </Alert>
           </Grid>
+
+           {/* מספר בית*/}
           <Grid item xs={4} style={{margin:3}}>
           
           <TextField
@@ -295,7 +306,10 @@ export default function Register() {
        
           {errors.house.massege}
         </Alert>
+
       </Grid>
+               {/* תאריך לידה*/}
+
           <Grid item xs={8} sm={6}>
            <input  style={{margin:5}}   type="date" name="" id="" onBlur={(e)=>(person.birthDate=e.target.value)}/> :תאריך לידה
             <Alert severity="error" style={{ visibility: values.birthDate }}>

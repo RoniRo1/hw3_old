@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import { Input } from '@mui/material';
 
 export default function Register() {
-  function init() {
+  function init () {
     if (localStorage["bgroup41"] != null) {
         bgroup41 = JSON.parse(localStorage["bgroup41"]);
 
