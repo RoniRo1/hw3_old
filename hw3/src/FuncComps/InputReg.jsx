@@ -8,42 +8,54 @@ import Grid from '@mui/material/Grid';
 import { Input } from '@mui/material';
 
 export default function Register() {
-  let username="";
- let password="";
- let password2 = "";
- let errors = {firstName:"", lastName:"",}
-const [massege, setMassege] = useState("");
-const [vis, setVis] = useState("hidden");
-
-  function Registerbtn () {
-    values="";
-
-  }
-  function CheckPassword(e){
-    password2= e.target.value
-    if (password==password2)
-    {
-        setVis("hidden")
+  function init() {
+    if (localStorage["bgroup41"] != null) {
+        bgroup41 = JSON.parse(localStorage["bgroup41"]);
 
     }
-    else{
-        setVis("visible")
-        setMassege("סיסמאות לא זהות")
+    else {
+        bgroup41 = null;
     }
-    console.log(password+ password2);
-  }
-  
-  useEffect(() => {
-    
-  })
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+}
+
+function signin() {
+    let id = document.getElementById("id").value;
+
+    let password = document.getElementById("password").value;
+    if (id != "" && password != "") {
+        if (bgroup41 != undefined) {
+            if (bgroup41.users[id] == undefined) {
+                alert("please register")
+                return;
+
+            }
+            else if (id == bgroup41.users[id]["id"] && password != bgroup41.users[id]["password"])
+                alert("Wrong password :(")
+            else if (id == bgroup41.users[id]["id"] && password == bgroup41.users[id]["password"]) {
+                /*alert("Welcome " + bgroup41.users[id]["name"] + "!");*/
+                bgroup41.currentUser = id;
+                localStorage["bgroup41"] = JSON.stringify(bgroup41);
+                window.location = "HtmlPage.html";
+            }
+            else {
+                alert("User name or password is incorrect");
+            }
+        }
+        else {
+            alert("Please register first.")
+        }
+
+    }
+    else {
+
+        alert("One field or more is empty!")
+    }
+
+}
+
+
+
+
   return (
     <>
     

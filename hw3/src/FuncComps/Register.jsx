@@ -297,7 +297,7 @@ export default function Register() {
         </Alert>
       </Grid>
           <Grid item xs={8} sm={6}>
-            <input type="date" name="" id="" onBlur={(e)=>(person.birthDate=e.target.value)}/>
+           <input  style={{margin:5}}   type="date" name="" id="" onBlur={(e)=>(person.birthDate=e.target.value)}/> :תאריך לידה
             <Alert severity="error" style={{ visibility: values.birthDate }}>
               {" "}
               {errors.birthDate.massege}
