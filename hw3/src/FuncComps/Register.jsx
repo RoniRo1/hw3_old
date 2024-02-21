@@ -9,7 +9,6 @@ import { Input, checkboxClasses } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 
 export default function Register() {
-
   // מערך שגיאות
   const errors = {
     firstName: {
@@ -39,13 +38,15 @@ export default function Register() {
       valid: new RegExp("^[a-zA-Z0-9!@#$%^&*()_></.']+$"),
     },
     street: { massege: " רק בעברית", valid: new RegExp("^[\u0590-\u05FF ]+$") },
-    birthDate: {massege:"חייב להיות מעל 18 ומתחת ל120"},
-    house:{massege:"מספר חיובי בלבד", valid: new RegExp("^[1-9]+[0-9]*$")}
+    birthDate: { massege: "חייב להיות מעל 18 ומתחת ל120" },
+    house: { massege: "מספר חיובי בלבד", valid: new RegExp("^[1-9]+[0-9]*$") },
+    img: { massege: "נא להעלות תמונה" },
+    city: { massege: "נא לבחור עיר מהרשימה" },
   };
-  
-  let password2 ;
-  //מערך יוזר
-  const person = {
+
+  let password2;
+  //הכנת מערך ליוזר 
+  const user = {
     firstName: "",
     lastName: "",
     password: "",
@@ -57,7 +58,8 @@ export default function Register() {
     house: "",
     username: "",
   };
-  // מערך הצגת פסקת שגיאה
+
+  // מערך להציג פסקת שגיאה
   const arr = {
     firstName: "hidden",
     lastName: "hidden",
@@ -71,107 +73,141 @@ export default function Register() {
     username: "hidden",
     password2: "hidden",
   };
+
+  //states...
+  const [userArr, setPerson] = useState({ ...user });
   const [values, setValues] = useState({ ...arr });
-  //const [personArr, setPerson]=useState({...person})
-// מערך ערים לכפתור
+
+ 
+ 
+  // מערך ערים לכפתור
   let citys = ["ראש העין", "תל אביב", "חיפה", "אשדוד", "ירושלים"];
+ 
+ 
   // לחיצה על כתפור הרשמה
   function registerUser() {
+   
     let arr = { ...values },
-      counter = 0;
-    console.log(person);
-    if (!errors.firstName.valid.test(person.firstName)) arr.firstName = "visible";
+   
+    counter = 0;
+   
+    if (!errors.firstName.valid.test(userArr.firstName))
+      arr.firstName = "visible";
     else {
       arr.firstName = "hidden";
       counter++;
     }
 
-    if (!errors.lastName.valid.test(person.lastName) || person.lastName == "")arr.lastName = "visible";
+    if (!errors.lastName.valid.test(userArr.lastName) || userArr.lastName == "")
+      arr.lastName = "visible";
     else {
       arr.lastName = "hidden";
       counter++;
     }
 
-    if (!errors.email.valid.test(person.email) || person.email == "")arr.email = "visible";
+    if (!errors.email.valid.test(userArr.email) || userArr.email == "")
+      arr.email = "visible";
     else {
       arr.email = "hidden";
       counter++;
     }
 
-    if ( !errors.username.valid.test(person.username) ||person.username == "" ||person.username.length > 60 )
+    if ( !errors.username.valid.test(userArr.username) ||  userArr.username == "" ||userArr.username.length > 60 )
       arr.username = "visible";
+
     else {
       arr.username = "hidden";
       counter++;
     }
 
-    if (!errors.password.valid.test(person.password) || person.password == "")  arr.password = "visible";
+    if (!errors.password.valid.test(userArr.password) || userArr.password == "")
+      arr.password = "visible";
     else {
       arr.password = "hidden";
       counter++;
     }
 
-    if (password2 != person.password) arr.password2 = "visible";
+    if (password2 != userArr.password) arr.password2 = "visible";
     else {
       arr.password2 = "hidden";
       counter++;
     }
 
-    if (!errors.street.valid.test(person.street) || person.street == "")arr.street = "visible";
+    if (!errors.street.valid.test(userArr.street) || userArr.street == "")
+      arr.street = "visible";
     else {
       arr.street = "hidden";
       counter++;
     }
+
     // חישוב גיל
-    let age=calculate_age(person.birthDate)
-    if(120<=age|| age <=18 || person.birthDate=="")  arr.birthDate="visible";
+    let age = calculate_age(userArr.birthDate);
+    if (120 <= age || age <= 18 || userArr.birthDate == "")
+      arr.birthDate = "visible";
     else {
       arr.birthDate = "hidden";
       counter++;
     }
-    if (!errors.house.valid.test(person.house) || person.house == "")
-    arr.house = "visible";
-  else {
-    arr.house = "hidden";
-    counter++;
-  }
-    setValues(arr);
 
-    if (counter == 6) {
+    if (!errors.house.valid.test(userArr.house) || userArr.house == "")
+      arr.house = "visible";
+    else {
+      arr.house = "hidden";
+      counter++;
+    }
+
+    if (userArr.img == "") arr.img = "visible";
+    else {
+      arr.img = "hidden";
+      counter++;
+    }
+
+    if (userArr.city == "") arr.city = "visible";
+    else {
+      arr.city = "hidden";
+      counter++;
+    }
+
+    setValues(arr);
+   
+    console.log(userArr);
+    if (counter == 8) {
       // לעבור למסך הבא....
     }
   }
 
   useEffect(() => console.log(values));
   console.log(values);
-// פונקציית חישוב גיל
- const calculate_age = (e) => {
+
+  // פונקציית חישוב גיל
+  const calculate_age = (e) => {
     var today = new Date();
-    var birthDate = new Date(e);  // create a date object directly from `dob1` argument
+    var birthDate = new Date(e); // create a date object directly from `dob1` argument
     var age_now = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
-    {
-        age_now--;
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age_now--;
     }
-    console.log(age_now);
+    //console.log(age_now);
     return age_now;
-  
-  }
+  };
+
+
   return (
     <div>
       <Box sx={{ mt: 1, width: "75%" }}>
-       <h1 style={{width:"60%"}}>Sign In</h1>
+
+        <h1 style={{ width: "60%" }}>Sign In</h1>
+
         <Grid container>
-       
-        
+
           {/*firstName*/}
-          <Grid item xs={4} style={{margin:3}}>
+          <Grid item xs={4} style={{ margin: 3 }}>
             <TextField
               required
               fullWidth
               label="First Name"
-              onChange={(e) => (person.firstName = e.target.value)}
+              onChange={(e) => (userArr.firstName = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.firstName }}>
               {" "}
@@ -180,12 +216,12 @@ export default function Register() {
           </Grid>
 
           {/*lastName*/}
-          <Grid item xs={4} style={{margin:3}}>
+          <Grid item xs={4} style={{ margin: 3 }}>
             <TextField
               required
               fullWidth
               label="Last Name"
-              onChange={(e) => (person.lastName = e.target.value)}
+              onChange={(e) => (userArr.lastName = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.lastName }}>
               {" "}
@@ -194,18 +230,18 @@ export default function Register() {
           </Grid>
 
           {/*email*/}
-          <Grid item xs={8} style={{margin:3}}>
+          <Grid item xs={8} style={{ margin: 3 }}>
             <TextField
               required
               fullWidth
               label="Email Address"
-              onChange={(e) => (person.email = e.target.value)}
+              onChange={(e) => (userArr.email = e.target.value)}
             />
-                  <Alert severity="error" style={{ visibility: values.email }}>
-            {" "}
-            {errors.email.massege}{" "}
-          </Alert>
-  </Grid>
+            <Alert severity="error" style={{ visibility: values.email }}>
+              {" "}
+              {errors.email.massege}{" "}
+            </Alert>
+          </Grid>
 
           {/*username*/}
           <Grid item xs={8}>
@@ -213,29 +249,29 @@ export default function Register() {
               required
               fullWidth
               label="username"
-              onChange={(e) => (person.username = e.target.value)}
+              onChange={(e) => (userArr.username = e.target.value)}
             />
-         <Alert severity="error" style={{ visibility: values.username }}>
-            {errors.username.massege}{" "}
-          </Alert>   </Grid>
-        
+            <Alert severity="error" style={{ visibility: values.username }}>
+              {errors.username.massege}{" "}
+            </Alert>{" "}
+          </Grid>
 
           {/*password*/}
-          <Grid item xs={4} style={{margin:3}}>
+          <Grid item xs={4} style={{ margin: 3 }}>
             <TextField
               required
               fullWidth
               label=" Password"
               autoComplete="new-password"
-              onBlur={(e) => (person.password = e.target.value)}
+              onBlur={(e) => (userArr.password = e.target.value)}
             />
-         <Alert severity="error" style={{ visibility: values.password }}>
-            {errors.password.massege}{" "}
-          </Alert>      </Grid>
-         
+            <Alert severity="error" style={{ visibility: values.password }}>
+              {errors.password.massege}{" "}
+            </Alert>{" "}
+          </Grid>
 
           {/*password 2*/}
-          <Grid item xs={4} style={{margin:3}}>
+          <Grid item xs={4} style={{ margin: 3 }}>
             <TextField
               required
               fullWidth
@@ -246,91 +282,95 @@ export default function Register() {
               {errors.password2.massege}{" "}
             </Alert>
           </Grid>
-          {/*file*/}
-          <Grid item xs={8} style={{margin:3}}>
+
+          {/*img*/}
+          <Grid item xs={8} style={{ margin: 3 }}>
             <Input
               required
               fullWidth
               autoComplete="image"
               inputProps={{ accept: "image/*" }}
-              onChange={(e)=> (person.img=e.target.files[0])}
+              onChange={(e) => (userArr.img = e.target.files[0])}
               type="file"
             />
+
+            <Alert severity="error" style={{ visibility: values.img }}>
+              {errors.img.massege}
+            </Alert>
           </Grid>
-          <br />
-          <br />
-          <br />
+
           {/*city*/}
-          <Grid item xs={8} style={{margin:3}}>
+          <Grid item xs={8} style={{ margin: 3 }}>
             <Autocomplete
               disablePortal
-              
               id="combo-box-demo"
               options={citys}
-              
               renderInput={(params) => <TextField {...params} label="עיר" />}
               onChange={(event, newValue) => {
-                person.city = newValue;
+                userArr.city = newValue;
               }}
-            />    
-          <br />
-          <br />
+            />
+            <Alert severity="error" style={{ visibility: values.city }}>
+              {errors.city.massege}
+            </Alert>
           </Grid>
+
           {/* street*/}
-          <Grid item xs={4} style={{margin:3}}>
-          
-              <TextField
-                required
-                fullWidth
-                label="Street"
-                onChange={(e) => (person.street = e.target.value)}
-              />
-           
+          <Grid item xs={4} style={{ margin: 3 }}>
+            <TextField
+              required
+              fullWidth
+              label="Street"
+              onChange={(e) => (userArr.street = e.target.value)}
+            />
+
             <Alert severity="error" style={{ visibility: values.street }}>
-           
               {errors.street.massege}
             </Alert>
           </Grid>
 
-           {/* מספר בית*/}
-          <Grid item xs={4} style={{margin:3}}>
-          
-          <TextField
-            required
-            fullWidth
-            label="house"
-            onChange={(e) => (person.house = e.target.value)}
-          />
-       
-        <Alert severity="error" style={{ visibility: values.house }}>
-       
-          {errors.house.massege}
-        </Alert>
+          {/* מספר בית*/}
+          <Grid item xs={4} style={{ margin: 3 }}>
+            <TextField
+              required
+              fullWidth
+              label="house"
+              onChange={(e) => (userArr.house = e.target.value)}
+            />
 
-      </Grid>
-               {/* תאריך לידה*/}
+            <Alert severity="error" style={{ visibility: values.house }}>
+              {errors.house.massege}
+            </Alert>
+          </Grid>
+
+          {/* תאריך לידה*/}
 
           <Grid item xs={8} sm={6}>
-           <input  style={{margin:5}}   type="date" name="" id="" onBlur={(e)=>(person.birthDate=e.target.value)}/> :תאריך לידה
+            <input
+              style={{ margin: 5 }}
+              type="date"
+              name=""
+              id=""
+              onBlur={(e) => (userArr.birthDate = e.target.value)}
+            />{" "}
+            :תאריך לידה
             <Alert severity="error" style={{ visibility: values.birthDate }}>
               {" "}
               {errors.birthDate.massege}
             </Alert>
-          </Grid> 
-          <Grid item xs={8} >
-          <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={registerUser}
-        >
-          Sign Up
-        </Button>
+          </Grid>
+          <Grid item xs={8}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={registerUser}
+            >
+              Sign Up
+            </Button>
+          </Grid>
         </Grid>
-        </Grid>
-
-       
       </Box>
     </div>
   );
