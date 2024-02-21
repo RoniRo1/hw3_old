@@ -13,17 +13,18 @@ export default function Register() {
   const errors = {
     firstName: {
       massege: "invalid First name",
-      valid: new RegExp("^[a-zA-Z]+$"),
+      valid: /^[a-zA-Z]+$/ 
+      // לא צריך regexp אולי לוותר על 
     },
     lastName: {
       massege: "invalid Last name",
-      valid: new RegExp("^[a-zA-Z]+$"),
+      valid: /^[a-zA-Z]+$/,
     },
     password: {
       massege:
         "password need to be 7-12 and contain upper letter, 0-9, <>!@#$%^&*()_? ",
       valid: new RegExp(
-        "^(?=.*[A-Z])(?=.*[0-9])(?=.*[<>!@#$%^&*()_?]).{7,12}$"
+        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[<>!@#$%^&*()_?]).{7,12}$/
       ),
     },
     password2: { massege: "not the same one" },
@@ -45,7 +46,7 @@ export default function Register() {
     city: { massege: "נא לבחור עיר מהרשימה" },
   };
 
-  let password2;
+ 
   //הכנת מערך ליוזר 
   const user = {
     firstName: "",
@@ -76,8 +77,9 @@ export default function Register() {
   };
 
   //states...
-  const [userArr, setPerson] = useState({ ...user });
+  const [userArr, setUserArr] = useState({ ...user });
   const [values, setValues] = useState({ ...arr });
+  const [password2, setPassword2] = useState({});
 
  
  
@@ -277,7 +279,7 @@ export default function Register() {
               required
               fullWidth
               label="Confirm Password"
-              onBlur={(e) => (password2 = e.target.value)}
+              onBlur={(e) => (setPassword2(e.target.value))}
             />
             <Alert severity="error" style={{ visibility: values.password2 }}>
               {errors.password2.massege}
