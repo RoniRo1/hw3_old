@@ -29,9 +29,10 @@ export default function Register() {
     password2: { massege: "not the same one" },
     email: {
       massege: "example@example.com",
-      valid: new RegExp(
-        "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[com]+)*$"
-      ),
+      valid: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[com]{3}$/
+     //   "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-z]+)*$" לא עובד
+     //מסתבר שלא צריך regexp??
+      ,
     },
     username: {
       massege: "a-z, numbers and specail characters only and up to 60",
@@ -279,7 +280,7 @@ export default function Register() {
               onBlur={(e) => (password2 = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.password2 }}>
-              {errors.password2.massege}{" "}
+              {errors.password2.massege}
             </Alert>
           </Grid>
 
