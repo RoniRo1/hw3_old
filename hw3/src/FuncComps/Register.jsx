@@ -210,7 +210,7 @@ export default function Register() {
               onChange={(e) => (userArr.firstName = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.firstName }}>
-              {" "}
+             
               {errors.firstName.massege}
             </Alert>
           </Grid>
@@ -224,7 +224,7 @@ export default function Register() {
               onChange={(e) => (userArr.lastName = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.lastName }}>
-              {" "}
+            
               {errors.lastName.massege}
             </Alert>
           </Grid>
@@ -238,8 +238,8 @@ export default function Register() {
               onChange={(e) => (userArr.email = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.email }}>
-              {" "}
-              {errors.email.massege}{" "}
+              
+              {errors.email.massege}
             </Alert>
           </Grid>
 
@@ -252,8 +252,8 @@ export default function Register() {
               onChange={(e) => (userArr.username = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.username }}>
-              {errors.username.massege}{" "}
-            </Alert>{" "}
+              {errors.username.massege}
+            </Alert>
           </Grid>
 
           {/*password*/}
@@ -266,8 +266,8 @@ export default function Register() {
               onBlur={(e) => (userArr.password = e.target.value)}
             />
             <Alert severity="error" style={{ visibility: values.password }}>
-              {errors.password.massege}{" "}
-            </Alert>{" "}
+              {errors.password.massege}
+            </Alert>
           </Grid>
 
           {/*password 2*/}
@@ -352,10 +352,10 @@ export default function Register() {
               name=""
               id=""
               onBlur={(e) => (userArr.birthDate = e.target.value)}
-            />{" "}
+            />
             :תאריך לידה
             <Alert severity="error" style={{ visibility: values.birthDate }}>
-              {" "}
+              
               {errors.birthDate.massege}
             </Alert>
           </Grid>
